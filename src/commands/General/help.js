@@ -1,73 +1,93 @@
-const now = new Date();
-const hour = now.getHours();
-let greeting;
-if (hour >= 0 && hour < 12) {
-    greeting = "🌄 Good Morning"; // Good morning
-} else if (hour >= 12 && hour < 18) {
-    greeting = "🏞️ Good Afternoon"; // Good afternoon
-} else {
-    greeting = "🌃 Good Evening"; // Good evening
-}
+const { AnimeWallpaper } = require("anime-wallpaper");
+const wall = new AnimeWallpaper();
 
 module.exports = {
-    name: 'help',
-    aliases: ['h', 'menu', 'list'],
-    category: 'general',
-    react: "😈",
-    description: 'Displays the command list or specific command info',
-    async execute(client, arg, M) {
-        try {
-            if (!arg) {
-                let pushName = M.pushName.trim();
+    name: "help",
+    alias: ["h", "menu"],
+    desc: "List all commands",
+    category: "General",
+    react: "✅",
+    start: async (client, m, { commands, args, prefix, text, toUpper }) => {
+        const { pushName, sender } = m;
 
-                if (pushName.split(' ').length === 1) {
-                    pushName = `${pushName}`;
+        if (args[0]) {
+            let name = args[0].toLowerCase();
+            let cmd = commands.get(name) || Array.from(commands.values()).find(v => v.alias.includes(name));
+
+            if (!cmd || cmd.type == "hide") {
+                return m.reply("No Command Found");
+            } else {
+                let data = [
+                    `╭─「 (づ￣ ³￣)づ 」*`,
+                    `*│ ɴᴀᴍᴇ:* 𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈`,
+                    `*│ ᴜsᴇʀ: @${pushName} {}⁩*`,
+                    `*│ ᴘʀᴇғɪx:* "${prefix}"`,
+                    `*│ ᴏᴡɴᴇʀ:* *𝐉𝐅𝐋𝐄𝐗 𝐎𝐆*`,
+                    `*╰────────────┈平和*`,
+                    ``,
+                    `𝐓𝐡𝐞𝐬𝐞 𝐚𝐫𝐞 𝐭𝐡𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬 𝐲𝐨𝐮 𝐜𝐚𝐧 𝐮𝐬𝐞~ ツ`,
+                    ``,
+                    `*${cmd.category.toUpperCase()} :-*`,
+                    "```",
+                    `${cmd.name}`,
+                    "```",
+                    ``,
+                    `⚠ *Note:*`,
+                    `➪ Use ${prefix}help <command_name> for more info of a specific command`,
+                    `➪ Example: ${prefix}help ${cmd.name}`,
+                    `*> ©️𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈*`,
+                ];
+
+                var buttonss = [
+                    { buttonId: `${prefix}help`, buttonText: { displayText: `help` }, type: 1 }
+                ];
+
+                let buth = {
+                    text: `${data.join("\n")}`,
+                    footer: "made by yush",
+                    buttons: buttonss,
+                    headerType: 1
+                };
+
+                return client.sendMessage(m.from, buth, { quoted: m });
+            }
+        } else {
+            let cm = commands.keys();
+            let category = {};
+
+            for (let cmd of cm) {
+                let info = commands.get(cmd);
+
+                if (!cmd || !info.category || info.category === 'private' || (info.category === "Nsfw" && !nsfw.includes(m.from))) {
+                    continue;
                 }
 
-                const categories = client.cmd.reduce((obj, cmd) => {
-                    if (cmd.category) { // Only include commands with a category
-                        const category = cmd.category;
-                        obj[category] = obj[category] || [];
-                        obj[category].push(cmd.name);
-                    }
-                    return obj;
-                }, {});
-
-                const commandList = Object.keys(categories);
-
-                let commands = '';
-
-                for (const category of commandList) {
-                    commands += `*${client.utils.capitalize(
-                        category,
-                        true
-                    )} :-*\n\`\`\`${categories[category].join(' , ')}\`\`\`\n\n`;
+                if (Object.keys(category).includes(info.category)) {
+                    category[info.category].push(info);
+                } else {
+                    category[info.category] = [info];
                 }
-
-                let message = `╭─「 (づ￣ ³￣)づ 」*\n*│ ɴᴀᴍᴇ:* 𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈\n*│ ᴜsᴇʀ: @⁨𝐉𝐅𝐋𝐄𝐗 𝐎𝐆 ${pushName}⁩*\n*│ ᴘʀᴇғɪx:* "${client.prefix}"\n*│ ᴏᴡɴᴇʀ:* *𝐉𝐅𝐋𝐄𝐗 𝐎𝐆*\n*╰────────────┈平和*\n\n𝐓𝐡𝐞𝐬𝐞 𝐚𝐫𝐞 𝐭𝐡𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬 𝐲𝐨𝐮 𝐜𝐚𝐧 𝐮𝐬𝐞~ ツ\n\n${commands}⚠ *Note:*\n\n *➪ Use ${client.prefix}help <command_name> for more info of a specific command*\n *➪ Example: ${client.prefix}help hello*\n*> ©️𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈*`;
-
-                await client.sendMessage(
-                    M.from,
-                    {
-                        text: message
-                    },
-                    {
-                        quoted: M,
-                    }
-                );
-
-                return;
             }
 
-            const command = client.cmd.get(arg) || client.cmd.find((cmd) => cmd.aliases && cmd.aliases.includes(arg));
+            const emo = nsfw.includes(m.from)
+                ? ["📈", "📖", "🍁", "🍀", "🌊", "🎵", "🔞", "🎟", "♨️", "🉐", "⚠️"]
+                : ["📈", "📖", "🍁", "🍀", "🌊", "🎵", "🎟", "♨️", "🉐", "⚠️"];
 
-            if (!command) return M.reply('Command not found');
+            let txt = `*Hello (｡♡‿♡｡)* ${pushName} l'm *${process.env.NAME}*.\n\n`;
+            txt += `*CARD-GAME :-*\n\`\`\`${category["CARD-GAME"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            txt += `*DEV :-*\n\`\`\`${category["DEV"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            txt += `*ECONOMY :-*\n\`\`\`${category["ECONOMY"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            txt += `*FUN :-*\n\`\`\`${category["FUN"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            txt += `*GENERAL :-*\n\`\`\`${category["GENERAL"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            txt += `*GROUP :-*\n\`\`\`${category["GROUP"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            txt += `*MEDIA :-*\n\`\`\`${category["MEDIA"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            txt += `*UTILS :-*\n\`\`\`${category["UTILS"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            txt += `📗 Type *${prefix}help* <Command-Name> or <Command-Name> --info\n`;
 
-            const message = `☠ *Command:* ${command.name}\n🎴 *Aliases:* ${command.aliases.join(', ')}\n🔗 *Category:* ${command.category || 'None'}\n⏰ *Cooldown:* ${command.cooldown || 'None'}\n🎗 *Usage:* ${client.prefix}${command.name}\n🧧 *Description:* ${command.description}`;
+            const ari = await wall.getAnimeWall3();
+            const arilogo = ari[Math.floor(Math.random() * ari.length)];
 
-            M.reply(message);
-        } catch (err) {
-            await client.sendMessage(M.from, { text: `${greeting} Error Deryl\n\nError:\n${err}` });
+            client.sendMessage(m.from, { image: { url: arilogo.image }, caption: txt }, { quoted: m });
         }
     }
 };
