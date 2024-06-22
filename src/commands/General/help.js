@@ -3,7 +3,7 @@ module.exports = {
     alias: ["h", "menu"],
     desc: "List all commands",
     category: "General",
-    react: "✅",
+    react: "👾",
     start: async (client, m, { commands, args, prefix, text, toUpper }) => {
         const { pushName, sender } = m;
 
@@ -74,10 +74,7 @@ module.exports = {
             txt += `➪ Example: ${prefix}help hello\n`;
             txt += `*> ©️𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈 02*\n`;
 
-            const ari = await wall.getAnimeWall3();
-            const arilogo = ari[Math.floor(Math.random() * ari.length)];
-
-            client.sendMessage(m.from, { image: { url: arilogo.image }, caption: txt }, { quoted: m });
+            client.sendMessage(m.from, { text: txt }, { quoted: m });
         }
     }
 };
