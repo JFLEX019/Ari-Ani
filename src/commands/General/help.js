@@ -1,6 +1,3 @@
-const { AnimeWallpaper } = require("anime-wallpaper");
-const wall = new AnimeWallpaper();
-
 module.exports = {
     name: "help",
     alias: ["h", "menu"],
@@ -59,7 +56,7 @@ module.exports = {
                 ? ["📈", "📖", "🍁", "🍀", "🌊", "🎵", "🔞", "🎟", "♨️", "🉐", "⚠️"]
                 : ["📈", "📖", "🍁", "🍀", "🌊", "🎵", "🎟", "♨️", "🉐", "⚠️"];
 
-            let txt = `╭─「 🏞️ Good Afternoon 」*\n`;
+            let txt = `╭─ *「 (づ￣ ³￣)づ 」*\n`;
             txt += `*│ ɴᴀᴍᴇ:* 𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈\n`;
             txt += `*│ ᴜsᴇʀ: @${pushName} {}⁩*\n`;
             txt += `*│ ᴘʀᴇғɪx:* "${prefix}"\n`;
@@ -75,7 +72,7 @@ module.exports = {
             txt += `⚠ *Note:*\n`;
             txt += `➪ Use ${prefix}help <command_name> for more info of a specific command\n`;
             txt += `➪ Example: ${prefix}help hello\n`;
-            txt += `*> ©️𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈*\n`;
+            txt += `*> ©️𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈 02*\n`;
 
             const ari = await wall.getAnimeWall3();
             const arilogo = ari[Math.floor(Math.random() * ari.length)];
