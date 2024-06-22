@@ -18,24 +18,10 @@ module.exports = {
                 return m.reply("No Command Found");
             } else {
                 let data = [
-                    `╭─「 (づ￣ ³￣)づ 」*`,
-                    `*│ ɴᴀᴍᴇ:* 𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈`,
-                    `*│ ᴜsᴇʀ: @${pushName} {}⁩*`,
-                    `*│ ᴘʀᴇғɪx:* "${prefix}"`,
-                    `*│ ᴏᴡɴᴇʀ:* *𝐉𝐅𝐋𝐄𝐗 𝐎𝐆*`,
-                    `*╰────────────┈平和*`,
-                    ``,
-                    `𝐓𝐡𝐞𝐬𝐞 𝐚𝐫𝐞 𝐭𝐡𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬 𝐲𝐨𝐮 𝐜𝐚𝐧 𝐮𝐬𝐞~ ツ`,
-                    ``,
-                    `*${cmd.category.toUpperCase()} :-*`,
-                    "```",
-                    `${cmd.name}`,
-                    "```",
-                    ``,
-                    `⚠ *Note:*`,
-                    `➪ Use ${prefix}help <command_name> for more info of a specific command`,
-                    `➪ Example: ${prefix}help ${cmd.name}`,
-                    `*> ©️𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈*`,
+                    `*🍁Command :* ${cmd.name.replace(/^\w/, c => c.toUpperCase())}`,
+                    `*👾Alias :* ${cmd.alias.join(", ")}`,
+                    `*🧾Description :* ${cmd.desc}`,
+                    `*💡Example :* ${cmd.usage.replace(/%prefix/gi, prefix).replace(/%command/gi, cmd.name).replace(/%text/gi, text)}`,
                 ];
 
                 var buttonss = [
@@ -43,7 +29,7 @@ module.exports = {
                 ];
 
                 let buth = {
-                    text: `${data.join("\n")}`,
+                    text: `*ℹ️Command Info*\n\n${data.join("\n")}`,
                     footer: "made by yush",
                     buttons: buttonss,
                     headerType: 1
@@ -73,16 +59,23 @@ module.exports = {
                 ? ["📈", "📖", "🍁", "🍀", "🌊", "🎵", "🔞", "🎟", "♨️", "🉐", "⚠️"]
                 : ["📈", "📖", "🍁", "🍀", "🌊", "🎵", "🎟", "♨️", "🉐", "⚠️"];
 
-            let txt = `*Hello (｡♡‿♡｡)* ${pushName} l'm *${process.env.NAME}*.\n\n`;
-            txt += `*CARD-GAME :-*\n\`\`\`${category["CARD-GAME"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
-            txt += `*DEV :-*\n\`\`\`${category["DEV"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
-            txt += `*ECONOMY :-*\n\`\`\`${category["ECONOMY"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
-            txt += `*FUN :-*\n\`\`\`${category["FUN"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
-            txt += `*GENERAL :-*\n\`\`\`${category["GENERAL"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
-            txt += `*GROUP :-*\n\`\`\`${category["GROUP"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
-            txt += `*MEDIA :-*\n\`\`\`${category["MEDIA"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
-            txt += `*UTILS :-*\n\`\`\`${category["UTILS"].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            let txt = `╭─「 🏞️ Good Afternoon 」*\n`;
+            txt += `*│ ɴᴀᴍᴇ:* 𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈\n`;
+            txt += `*│ ᴜsᴇʀ: @${pushName} {}⁩*\n`;
+            txt += `*│ ᴘʀᴇғɪx:* "${prefix}"\n`;
+            txt += `*│ ᴏᴡɴᴇʀ:* *𝐉𝐅𝐋𝐄𝐗 𝐎𝐆*\n`;
+            txt += `*╰────────────┈平和*\n\n`;
+            txt += `𝐓𝐡𝐞𝐬𝐞 𝐚𝐫𝐞 𝐭𝐡𝐞 𝐜𝐨𝐦𝐦𝐚𝐧𝐝𝐬 𝐲𝐨𝐮 𝐜𝐚𝐧 𝐮𝐬𝐞~ ツ\n\n`;
+
+            for (const [index, key] of Object.keys(category).entries()) {
+                txt += `*${key.toUpperCase()} ${emo[index]} :-*\n\`\`\`${category[key].map(cmd => cmd.name).join(", ")}\`\`\`\n\n`;
+            }
+
             txt += `📗 Type *${prefix}help* <Command-Name> or <Command-Name> --info\n`;
+            txt += `⚠ *Note:*\n`;
+            txt += `➪ Use ${prefix}help <command_name> for more info of a specific command\n`;
+            txt += `➪ Example: ${prefix}help hello\n`;
+            txt += `*> ©️𝐆𝐄𝐓𝐎-𝐁𝐎𝐓😈*\n`;
 
             const ari = await wall.getAnimeWall3();
             const arilogo = ari[Math.floor(Math.random() * ari.length)];
